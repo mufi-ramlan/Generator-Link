@@ -1,99 +1,86 @@
 let linkHasil = "";
 
-// Kapital awal tiap kata
-function capitalizeNama(nama) {
+function capitalizeNama(nama){
   return nama
     .toLowerCase()
-    .replace(/\b\w/g, huruf => huruf.toUpperCase());
+    .replace(/\b\w/g, h => h.toUpperCase());
 }
 
-// Generate link undangan
-function generateLink() {
-  let nama = document.getElementById("nama").value.trim();
+function generateLink(e){
 
-  if (!nama) {
+  // cegah form submit/reload (sering bikin gagal di HP)
+  if(e) e.preventDefault();
+
+  const input = document.getElementById("nama");
+  const hasil = document.getElementById("hasil");
+
+  if(!input || !hasil){
+    alert("Element nama / hasil tidak ditemukan");
+    return;
+  }
+
+  let nama = input.value.trim();
+
+  if(!nama){
     alert("Masukkan nama dulu!");
     return;
   }
 
-  // user isi manual contoh:
-  // Bapak Ahmad
-  // Ibu Rina
-  // Keluarga Bpk. Hasan
   nama = capitalizeNama(nama);
 
   const formatNama = `YTH. ${nama}`;
   const encoded = encodeURIComponent(formatNama);
 
   linkHasil =
-    `https://mufi-ramlan.github.io/wedding/?to=${encoded}`;
+   `https://mufi-ramlan.github.io/wedding/?to=${encoded}`;
 
-  document.getElementById("hasil").innerText = linkHasil;
+  // pakai textContent lebih aman
+  hasil.textContent = linkHasil;
 }
 
 
-// Copy link
-function copyLink() {
-  if (!linkHasil) {
+
+function copyLink(){
+  if(!linkHasil){
     alert("Buat link dulu!");
     return;
   }
 
-  if (navigator.clipboard) {
+  if(navigator.clipboard && window.isSecureContext){
     navigator.clipboard.writeText(linkHasil)
-      .then(() => {
-        alert("Link berhasil disalin!");
-      })
-      .catch(() => {
-        fallbackCopy(linkHasil);
-      });
-
-  } else {
+      .then(()=>alert("Link berhasil disalin!"))
+      .catch(()=>fallbackCopy(linkHasil));
+  }else{
     fallbackCopy(linkHasil);
   }
 }
 
 
-// Fallback copy untuk browser lama / iOS
-function fallbackCopy(text) {
+function fallbackCopy(text){
+  const ta = document.createElement("textarea");
+  ta.value = text;
+  ta.style.position="fixed";
+  ta.style.opacity="0";
 
-  const textarea = document.createElement("textarea");
-  textarea.value = text;
+  document.body.appendChild(ta);
 
-  textarea.style.position = "fixed";
-  textarea.style.left = "0";
-  textarea.style.top = "0";
-  textarea.style.opacity = "0";
-
-  textarea.setAttribute("readonly","");
-
-  document.body.appendChild(textarea);
-
-  textarea.focus();
-  textarea.select();
-  textarea.setSelectionRange(0,999999);
-
-  let berhasil = false;
+  ta.focus();
+  ta.select();
+  ta.setSelectionRange(0,999999);
 
   try{
-    berhasil = document.execCommand("copy");
-  } catch(e){
-    berhasil = false;
-  }
-
-  document.body.removeChild(textarea);
-
-  if(berhasil){
+    document.execCommand("copy");
     alert("Link berhasil disalin!");
-  } else{
-    alert("Gagal menyalin. Coba salin manual.");
+  }catch{
+    alert("Gagal menyalin.");
   }
 
+  document.body.removeChild(ta);
 }
 
 
-// Ambil nama tamu dari parameter ?to=
-document.addEventListener("DOMContentLoaded", function(){
+
+document.addEventListener("DOMContentLoaded", ()=>{
 
   const nama = new URLSearchParams(
     window.location.search
