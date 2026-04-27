@@ -26,7 +26,7 @@ function Prm(){
   const formatNama = `YTH. ${gender} ${nama} `;
   const encoded = encodeURIComponent(formatNama);
 
-  linkHasil = `https://zulfikar2208.github.io/wedding/?to=${encoded}`;
+  linkHasil = `https://mufi-ramlan.github.io/wedding/?to=${encoded}`;
 
   document.getElementById("hasil").innerText = linkHasil;
 }
