@@ -11,19 +11,11 @@ function generateLink() {
     alert("Masukkan nama dulu!");
     return;
   }
-function Prm(){
-  const prm = document.getElementById("prm").checked
-  if (prm){
-    return "Ibu"
-  }else{
-    return "Bapak"
-  }
-}
 
-
+  // user isi manual: Bapak Ahmad / Ibu Rina / Keluarga Bpk. Hasan
   nama = capitalizeNama(nama);
-  const gender = Prm()
-  const formatNama = `YTH. ${gender} ${nama} `;
+
+  const formatNama = `YTH. ${nama}`;
   const encoded = encodeURIComponent(formatNama);
 
   linkHasil = `https://zulfikar2208.github.io/wedding/?to=${encoded}`;
@@ -37,11 +29,10 @@ function copyLink() {
     return;
   }
 
-  // Coba modern clipboard API dulu
   if (navigator.clipboard) {
     navigator.clipboard.writeText(linkHasil)
       .then(() => alert("Link berhasil disalin!"))
-      .catch(() => fallbackCopy(linkHasil)); // ← kalau gagal, pakai fallback
+      .catch(() => fallbackCopy(linkHasil));
   } else {
     fallbackCopy(linkHasil);
   }
@@ -51,24 +42,25 @@ function fallbackCopy(text) {
   const textarea = document.createElement("textarea");
   textarea.value = text;
 
-  // Wajib: posisi harus visible & dalam viewport di iOS/Android
   textarea.style.position = "fixed";
   textarea.style.left = "0";
   textarea.style.top = "0";
   textarea.style.opacity = "0";
-  textarea.setAttribute("readonly", ""); // cegah keyboard muncul di HP
-  
+  textarea.setAttribute("readonly", "");
+
   document.body.appendChild(textarea);
-  
-  // Khusus iOS Safari
+
   const range = document.createRange();
   range.selectNodeContents(textarea);
+
   const selection = window.getSelection();
   selection.removeAllRanges();
   selection.addRange(range);
-  textarea.setSelectionRange(0, 999999); // ← kunci untuk iOS
+
+  textarea.setSelectionRange(0, 999999);
 
   const berhasil = document.execCommand("copy");
+
   document.body.removeChild(textarea);
 
   if (berhasil) {
@@ -82,7 +74,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const nama = new URLSearchParams(window.location.search).get("to");
   const guestEl = document.getElementById("guestName");
 
-  guestEl.textContent = nama 
-    ? decodeURIComponent(nama) 
+  guestEl.textContent = nama
+    ? decodeURIComponent(nama)
     : "Nama Tamu";
 });
