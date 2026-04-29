@@ -1,28 +1,63 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>Generator Link Undangan</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generator Link Undangan</title>
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="./generator.css">
+<link rel="stylesheet" href="./generator.css">
 </head>
 <body>
 
-  <div class="card">
-    <h2>Generator Link Tamu</h2>
+<div class="card">
 
-    <input type="text" id="nama" placeholder="Masukkan nama tamu">
+<h2>Generator Link Tamu</h2>
 
-    <button onclick="generateLink()">Buat Link</button>
+<input
+type="text"
+id="nama"
+placeholder="Masukkan nama tamu"
+/>
 
-    <div class="hasil" id="hasil">Link akan muncul di sini</div>
+<button onclick="generateLink()">
+Buat Link
+</button>
 
-    <button class="copy" onclick="copyLink()">Copy Link</button>
-  </div>
 
-  <!-- JS -->
-  <script src="./generator.js"></script>
+<!-- HASIL LINK -->
+<div class="hasil" id="hasil">
+Link akan muncul di sini
+</div>
+
+<button class="copy" onclick="copyLink()">
+Copy Link
+</button>
+
+
+<!-- TEMPLATE PESAN -->
+<h3>Template Pesan WhatsApp</h3>
+
+<textarea
+id="templatePesan"
+rows="10"
+readonly
+placeholder="Pesan undangan otomatis muncul di sini">
+</textarea>
+
+
+<div class="action-group">
+<button onclick="copyPesan()">
+Copy Pesan
+</button>
+
+<button onclick="kirimWhatsapp()">
+Kirim WhatsApp
+</button>
+</div>
+
+</div>
+
+<script src="./generator.js"></script>
+
 </body>
 </html>
